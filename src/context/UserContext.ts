@@ -5,8 +5,8 @@ import { createContext, useContext, useState, ReactNode } from 'react';
 // interface WalletContextType {
 //     user : userInfo;
 //     setUser: (value: userInfo)=> void;
-    
-    
+
+
 // }
 // const walletContext = createContext<WalletContextType | undefined> ;
 
@@ -14,11 +14,15 @@ import { createContext, useContext, useState, ReactNode } from 'react';
 
 const UserContext = createContext({
     user: {} as userInfo,
-    setUser: (value: userInfo) => {},
+    setUser: (value: userInfo) => { },
     login: false,
-    setLogin: (value: boolean) => {},
+    setLogin: (value: boolean) => { },
     isLoading: false,
-    setIsLoading: (value: boolean) => {}
+    setIsLoading: (value: boolean) => { },
+    imageUrl: '/upload-bg.png',
+    setImageUrl: (value: string) => {},
+    isCreated: false,
+    setIsCreated: (value: boolean) => { },
 })
 
 export default UserContext;
