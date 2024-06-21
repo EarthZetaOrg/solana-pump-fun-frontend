@@ -1,20 +1,24 @@
 "use client";
 import { CoinBlog } from "@/components/CoinBlog";
+import Modal from "@/components/Modal";
 import UserContext from "@/context/UserContext";
 import { coinInfo, userInfo } from "@/utils/types";
 import { getCoinsInfo, getCoinsInfoBy, getUser } from "@/utils/util";
 import { flightRouterStateSchema } from "next/dist/server/app-render/types";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 export default function Page() {
-  const { user } = useContext(UserContext);
+  const { user, imageUrl, setImageUrl } = useContext(UserContext);
   const pathname = usePathname();
   const [param, setParam] = useState<string | null>(null);
   const [index, setIndex] = useState<userInfo>({} as userInfo);
   const [option, setOption] = useState<number>(1);
   const [data, setData] = useState<coinInfo[]>([]);
+  const [isModal, setIsModal] = useState<boolean>(false)
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
   useEffect(() => {
     // Extract the last segment of the pathname
     const segments = pathname.split("/");
@@ -44,22 +48,41 @@ export default function Page() {
     }
     fetchData();
   }, [option])
+
+  const handleModalClose = () => {
+    setIsModal(false);
+  };
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files && event.target.files[0];
+    console.log("========", file);
+    if (file) {
+      const url = URL.createObjectURL(file);
+      console.log("url++++++", url);
+      setImageUrl(url);
+
+      // Resetting the value of the file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+  
   return (
     <div>
       <div className="grid gap-4 justify-center ml-24">
         <div className="flex m-auto justify-center">
-          {/* {index.avatar !== undefined && (
+          {index.avatar !== undefined && (
             <img
               src={`${index.avatar}`}
               alt="Token IMG"
               className="rounded object-cover w-24 h-24"
             />
-          )} */}
+          )}
           <div className="ml-4 text-white">
             <p className="text-xl mb-3">@{index.name}</p>
             <p className="text-xl my-3">0 followers</p>
             <p className="text-xl my-3">dev</p>
-            <button className="text-2xl border-solid border-2 p-2 rounded-md border-white">
+            <button className="text-2xl border-solid border-2 p-2 rounded-md border-white" onClick={() => setIsModal(true)}>
               Edit profile
             </button>
             <div className="flex m-3 text-xl justify-between">
@@ -145,6 +168,40 @@ export default function Page() {
           Following
         </p>
       </div>
+      <Modal isOpen={isModal} onClose={handleModalClose}>
+        <h2 className="text-2xl mb-4">Edit Profile</h2>
+        <form>
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1" htmlFor="username">
+              Username
+            </label>
+            <input
+              className="w-full p-2 border rounded-md"
+              type="text"
+              id="username"
+              name="username"
+              value={index.name}
+              // onChange={}
+            />
+          </div>
+          <div className="mt-[20px] m-auto bg-white pt-2 rounded-lg">
+            <input
+              type="file"
+              className="ml-2 mb-2"
+              onChange={handleFileChange}
+              ref={fileInputRef}
+            />
+          </div>
+          <div className="flex justify-around">
+            <button type="submit" className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md">
+              Save
+            </button >
+          <button className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md" onClick={()=>setIsModal(false)}>
+            cancel
+          </button>
+          </div>
+        </form>
+      </Modal>
       <div>
         {(option == 4) &&
           <div className="flex justify-center">
