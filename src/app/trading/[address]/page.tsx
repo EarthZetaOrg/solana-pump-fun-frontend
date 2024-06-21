@@ -3,7 +3,7 @@ import { Chatting } from "@/components/Chatting";
 import { CoinBlog } from "@/components/CoinBlog";
 import { Holders } from "@/components/Holders";
 import { TradeForm } from "@/components/TradeForm";
-import TradingChart from "@/components/TradingChart";
+import {TradingChart} from "@/components/TVChart/TradingChart";
 import { coinInfo } from "@/utils/types";
 import { getCoinInfo, getCoinTrade, getCoinsInfoBy } from "@/utils/util";
 import Link from "next/link";
@@ -12,40 +12,9 @@ import { useEffect, useMemo, useState } from "react";
 
 export default function Page() {
   const pathname = usePathname();
-  const [param, setParam] = useState<string | null>(null);
+  const [param, setParam] = useState<string >('');
   const [progress, setProgress] = useState<Number>(60);
   const [coin, setCoin] = useState<coinInfo>({} as coinInfo);
-
-  //TradingView Chart
-  const chainId = useChainId();
-  
-  const tradingVariable = useTradingVariables(
-    chainId,
-    tradeState.collateralType,
-  );
-  
-  const pairs = useMemo(() => {
-    if (!tradingVariable || !chart || !pricesBefore) {
-      return [];
-    }
-
-    return (
-      tradingVariable.pairs.map((pair, index) => ({
-        ...pair,
-        price: chart.closes?.[index] ? chart.closes?.[index] : null,
-        percentage:
-          !!chart.closes?.[index] && !!pricesBefore[index]
-            ? ((chart.closes?.[index] - pricesBefore[index]!) /
-                chart.closes?.[index]) *
-              100
-            : null,
-      })) || []
-    );
-  }, [tradingVariable, pricesBefore, chart]);
-
-  const selectedPairIndex = tradeState.pairIndex;
-  const selectedPair = pairs[selectedPairIndex];
-
 
 
   useEffect(() => {
@@ -56,7 +25,7 @@ export default function Page() {
       setParam(parameter);
       const data = await getCoinInfo(parameter);
       setCoin(data);
-      const value = Math.floor(data.reserveOne / 10000_000_000_000)
+      const value = Math.floor(data.reserveOne / 10_000_000_000_000)
       setProgress(100 - value)
     }
     fetchData()
@@ -74,9 +43,7 @@ export default function Page() {
       <div className="grid grid-flow-col-dense grid-cols-3 m-auto px-3">
         {/* trading view chart  */}
         <div className=" col-span-2 mx-2">
-          <TradingChart name={selectedPair.name}
-            pairIndex={selectedPair.pairIndex}
-            groupIndex={selectedPair.groupIndex}></TradingChart>
+          <TradingChart param={coin}></TradingChart>
           <Chatting param={param} coin={coin}></Chatting>
         </div>
         <div className="col-span-2">

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.30.0",
+    "@gainsnetwork/sdk": "^0.2.1",
     "@solana/wallet-adapter-base": "^0.9.23",
     "@solana/wallet-adapter-react": "^0.15.35",
     "@solana/wallet-adapter-react-ui": "^0.9.35",
@@ -26,7 +27,10 @@
     "react-loading": "^2.0.3",
     "react-query": "^3.39.3",
     "react-spinners": "^0.13.8",
-    "react-toastify": "^10.0.5"
+    "react-toastify": "^10.0.5",
+    "react-use": "^17.5.0",
+    "tailwind-merge": "^2.3.0",
+    "viem": "^2.14.2"
   },
   "devDependencies": {
     "@types/node": "^20",

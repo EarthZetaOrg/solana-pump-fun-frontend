@@ -11,7 +11,7 @@ import "dotenv/config.js";
 import LoginContext from "@/context/CoinContex";
 import { useWallet } from "@solana/wallet-adapter-react";
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 export default function Providers({ children }: { children: ReactNode }) {
   const wallet = useWallet();

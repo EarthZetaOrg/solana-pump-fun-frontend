@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { coinInfo, userInfo } from './types';
+import { ChartTable, coinInfo, userInfo } from './types';
 
 const BASE_URL = process.env.BASE_URL;
 
@@ -53,6 +53,7 @@ export const getCoinsInfo = async (): Promise<coinInfo[]> => {
     return res.data
 }
 export const getCoinsInfoBy = async (id: string): Promise<coinInfo[]> => {
+    
     const res = await axios.get<coinInfo[]>(`http://localhost:5000/coin/user/${id}`);
     return res.data
 }
@@ -94,3 +95,24 @@ export const getCoinTrade = async (data: string): Promise<any> => {
         return { error: "error setting up the request" }
     }
 }
+
+export async function getChartTable({
+    pairIndex,
+}: {
+    pairIndex: number;
+}): Promise<ChartTable> {
+    try {
+        const res = await axios.get(
+            `${("http://localhost:5000/cointrade")}/${pairIndex}`,
+        )
+
+        if (!res) {
+            throw new Error();
+        }
+
+        return res.data 
+    } catch (err) {
+        return Promise.reject(new Error("Failed at fetching charts"));
+    }
+}
+

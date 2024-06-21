@@ -32,6 +32,10 @@ export const chartOverrides = {
   "mainSeriesProperties.priceLineColor": "#3a3e5e",
   "scalesProperties.textColor": "#9494A8",
   "scalesProperties.lineColor": "#111114",
+  "scalesProperties.fontSize": 14,
+  "priceScaleSelectionStrategyName": "left",
+  "scalesProperties.showSymbolLabels": true,
+
   ...chartStyleOverrides,
 };
 
@@ -50,9 +54,9 @@ export const disabledFeatures: ChartingLibraryFeatureset[] = [
   "header_symbol_search",
   "header_quick_search",
   "popup_hints",
-  "use_localstorage_for_settings",
-  "right_bar_stays_on_scroll",
-  "symbol_info",
+  // "use_localstorage_for_settings",
+  // "right_bar_stays_on_scroll",
+  // "symbol_info",
 ];
 export const enabledFeatures: ChartingLibraryFeatureset[] = [
   "side_toolbar_in_fullscreen_mode",

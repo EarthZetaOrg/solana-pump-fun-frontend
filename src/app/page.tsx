@@ -65,9 +65,9 @@ export default function Home() {
       </div>
       {data &&
         <div className="flex-wrap flex justify-center ">
-          {data.map((index) => (
-            <Link href={`/trading/${index._id}`} >
-                <CoinBlog coin={index} componentKey="coin"></CoinBlog>
+          {data.map((temp,index) => (
+            <Link href={`/trading/${temp._id}`} key={index}>
+                <CoinBlog coin={temp} componentKey="coin"></CoinBlog>
             </Link>
           ))}
         </div>
