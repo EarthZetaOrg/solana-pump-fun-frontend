@@ -1,4 +1,3 @@
-import { Instruction, createSignerFromKeypair, generateSigner, percentAmount, signerIdentity } from "@metaplex-foundation/umi";
 import { ComputeBudgetProgram, Connection, Keypair, PublicKey, SYSVAR_RENT_PUBKEY, Signer, SystemProgram, Transaction, TransactionResponse, VersionedTransaction, clusterApiUrl, sendAndConfirmTransaction } from "@solana/web3.js";
 import { PROGRAM_ID } from "./cli/programId";
 import { AccountType, TOKEN_PROGRAM_ID, getAssociatedTokenAddress , ASSOCIATED_TOKEN_PROGRAM_ID} from "@solana/spl-token";
