@@ -1,6 +1,5 @@
 "use client";
 
-import { getAssetClassFromGroupIndex, type Pair } from "@gainsnetwork/sdk";
 import type {
   Bar,
   LibrarySymbolInfo,
