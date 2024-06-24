@@ -83,7 +83,7 @@ export const ConnectButton: FC = () => {
   };
   return (
     <div>
-      <button className=" rounded-lg border-[0.75px] border-[#371111] bg-[#5b1717] shadow-btn-inner text-[#ffffff] tracking-[0.32px] py-1 px-2 mb-1  group relative ">
+      <button className=" rounded-lg border-[0.75px] border-[#371111] bg-[#5b1717] shadow-btn-inner text-[#ffffff] tracking-[0.32px] h-[40px] pt-1 px-2 group relative ">
         {login  && publicKey ? (
           <>
             <div className="flex mr-3 items-center justify-center text-[16px] lg:text-md">
@@ -100,7 +100,7 @@ export const ConnectButton: FC = () => {
               </div>
             </div>
             <div className="w-[200px] absolute right-0 top-10 hidden group-hover:block">
-              <ul className="border-[0.75px] border-[#371111] rounded-lg bg-[#371111] p-2 mt-2">
+              <ul className="border-[0.75px] border-[#371111] rounded-lg bg-[#371111] p-2 ">
                 <li>
                   <div
                     className="flex gap-2 items-center mb-1 text-primary-100 text-md tracking-[-0.32px]"
