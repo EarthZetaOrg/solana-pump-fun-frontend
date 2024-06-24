@@ -4,7 +4,6 @@ import Modal from "@/components/Modal";
 import UserContext from "@/context/UserContext";
 import { coinInfo, userInfo } from "@/utils/types";
 import { getCoinsInfo, getCoinsInfoBy, getUser } from "@/utils/util";
-import { flightRouterStateSchema } from "next/dist/server/app-render/types";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -206,8 +205,8 @@ export default function Page() {
         {(option == 4) &&
           <div className="flex justify-center">
             {
-              data.map((coin) => (
-                <Link href={`/trading/${coin?.token}`}>
+              data.map((coin, index) => (
+                <Link key={index} href={`/trading/${coin?.token}`}>
                   <CoinBlog coin={coin} componentKey="coin" />
                 </Link>
               ))

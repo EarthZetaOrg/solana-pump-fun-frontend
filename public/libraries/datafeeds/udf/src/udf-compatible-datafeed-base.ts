@@ -19,6 +19,7 @@ import {
 	TimescaleMark,
 	SymbolResolveExtension,
 	VisiblePlotsSet,
+	Timezone,
 } from '../../../charting_library/datafeed-api';
 
 import {
@@ -278,12 +279,14 @@ export class UDFCompatibleDatafeedBase implements IExternalDatafeed, IDatafeedQu
 			this._send<UdfSearchSymbolsResponse | UdfErrorResponse>('search', params)
 				.then((response: UdfSearchSymbolsResponse | UdfErrorResponse) => {
 					if (response.s !== undefined) {
-						logMessage(`UdfCompatibleDatafeed: search symbols error=${response.errmsg}`);
-						onResult([]);
-						return;
+						if ('errmsg' in response) {
+							logMessage(`UdfCompatibleDatafeed: search symbols error=${response.errmsg}`);
+							onResult([]);
+							return;
+						}
 					}
 
-					onResult(response);
+					onResult(response as UdfSearchSymbolsResponse);
 				})
 				.catch((reason?: string | Error) => {
 					logMessage(`UdfCompatibleDatafeed: Search symbols for '${userInput}' failed. Error=${getErrorMessage(reason)}`);
@@ -328,9 +331,11 @@ export class UDFCompatibleDatafeedBase implements IExternalDatafeed, IDatafeedQu
 					if (response.s !== undefined) {
 						onError('unknown_symbol');
 					} else {
-						const symbol = response.name;
-						const listedExchange = response.listed_exchange ?? response['exchange-listed'];
-						const tradedExchange = response.exchange ?? response['exchange-traded'];
+						const resolveSymbolResponse = response as ResolveSymbolResponse;
+
+						const symbol = resolveSymbolResponse.name;
+						const listedExchange = resolveSymbolResponse.listed_exchange ?? resolveSymbolResponse['exchange-listed'];
+						const tradedExchange = resolveSymbolResponse.exchange ?? resolveSymbolResponse['exchange-traded'];
 
 						const result: LibrarySymbolInfo = {
 							...response,
@@ -338,26 +343,33 @@ export class UDFCompatibleDatafeedBase implements IExternalDatafeed, IDatafeedQu
 							base_name: [listedExchange + ':' + symbol],
 							listed_exchange: listedExchange,
 							exchange: tradedExchange,
-							ticker: response.ticker,
-							currency_code: response.currency_code ?? response['currency-code'],
-							original_currency_code: response.original_currency_code ?? response['original-currency-code'],
-							unit_id: response.unit_id ?? response['unit-id'],
-							original_unit_id: response.original_unit_id ?? response['original-unit-id'],
-							unit_conversion_types: response.unit_conversion_types ?? response['unit-conversion-types'],
-							has_intraday: response.has_intraday ?? response['has-intraday'] ?? false,
-							visible_plots_set: response.visible_plots_set ?? response['visible-plots-set'],
-							minmov: response.minmovement ?? response.minmov ?? 0,
-							minmove2: response.minmovement2 ?? response.minmove2,
-							session: response.session ?? response['session-regular'],
-							session_holidays: response.session_holidays ?? response['session-holidays'],
-							supported_resolutions: response.supported_resolutions ?? response['supported-resolutions'] ?? this._configuration.supported_resolutions ?? [],
-							has_daily: response.has_daily ?? response['has-daily'] ?? true,
-							intraday_multipliers: response.intraday_multipliers ?? response['intraday-multipliers'] ?? ['1', '5', '15', '30', '60'],
-							has_weekly_and_monthly: response.has_weekly_and_monthly ?? response['has-weekly-and-monthly'],
-							has_empty_bars: response.has_empty_bars ?? response['has-empty-bars'],
-							volume_precision: response.volume_precision ?? response['volume-precision'],
-							format: response.format ?? 'price',
+							ticker: resolveSymbolResponse.ticker,
+							currency_code: resolveSymbolResponse.currency_code ?? resolveSymbolResponse['currency-code'],
+							original_currency_code: resolveSymbolResponse.original_currency_code ?? resolveSymbolResponse['original-currency-code'],
+							unit_id: resolveSymbolResponse.unit_id ?? resolveSymbolResponse['unit-id'],
+							original_unit_id: resolveSymbolResponse.original_unit_id ?? resolveSymbolResponse['original-unit-id'],
+							unit_conversion_types: resolveSymbolResponse.unit_conversion_types ?? resolveSymbolResponse['unit-conversion-types'],
+							has_intraday: resolveSymbolResponse.has_intraday ?? resolveSymbolResponse['has-intraday'] ?? false,
+							visible_plots_set: resolveSymbolResponse.visible_plots_set ?? resolveSymbolResponse['visible-plots-set'],
+							minmov: resolveSymbolResponse.minmovement ?? resolveSymbolResponse.minmov ?? 0,
+							minmove2: resolveSymbolResponse.minmovement2 ?? resolveSymbolResponse.minmove2,
+							session: resolveSymbolResponse.session ?? resolveSymbolResponse['session-regular'],
+							session_holidays: resolveSymbolResponse.session_holidays ?? resolveSymbolResponse['session-holidays'],
+							supported_resolutions: resolveSymbolResponse.supported_resolutions ?? resolveSymbolResponse['supported-resolutions'] ?? this._configuration.supported_resolutions ?? [],
+							has_daily: resolveSymbolResponse.has_daily ?? resolveSymbolResponse['has-daily'] ?? true,
+							intraday_multipliers: resolveSymbolResponse.intraday_multipliers ?? resolveSymbolResponse['intraday-multipliers'] ?? ['1', '5', '15', '30', '60'],
+							has_weekly_and_monthly: resolveSymbolResponse.has_weekly_and_monthly ?? resolveSymbolResponse['has-weekly-and-monthly'],
+							has_empty_bars: resolveSymbolResponse.has_empty_bars ?? resolveSymbolResponse['has-empty-bars'],
+							volume_precision: resolveSymbolResponse.volume_precision ?? resolveSymbolResponse['volume-precision'],
+							format: resolveSymbolResponse.format ?? 'price',
+						
+							// Add missing properties with default values or extract from `resolveSymbolResponse`
+							description: resolveSymbolResponse.description ?? 'No description provided',
+							type: resolveSymbolResponse.type ?? 'stock',
+							timezone: (resolveSymbolResponse.timezone ?? 'UTC') as Timezone,
+							pricescale: resolveSymbolResponse.pricescale ?? 100,
 						};
+						
 						onResultReady(result);
 					}
 				})
@@ -439,3 +451,4 @@ function defaultConfiguration(): UdfCompatibleConfiguration {
 		supports_timescale_marks: false,
 	};
 }
+

@@ -69,8 +69,8 @@ export const Chatting: React.FC<ChattingProps> = ({ param, coin }) => {
         {isTrades ? (coin &&
           <div>
             <MessageForm msg={ownerMsg}></MessageForm>
-            {messages && messages.map((message) => (
-              <MessageForm msg={message}></MessageForm>
+            {messages && messages.map((message, index) => (
+              <MessageForm key={index} msg={message}></MessageForm>
             ))}
           </div>
         ) : (
@@ -82,8 +82,8 @@ export const Chatting: React.FC<ChattingProps> = ({ param, coin }) => {
               <p className="text-xl leading-10">Date</p>
               <p className="text-xl leading-10  ">Transaction</p>
             </div>
-            {trades.record && trades.record.map((trade) => (
-              <Trade trade={trade}></Trade>
+            {trades.record && trades.record.map((trade, index) => (
+              <Trade key={index} trade={trade}></Trade>
             ))}
           </div>
         )}

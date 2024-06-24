@@ -48,7 +48,7 @@ export const Holders: React.FC<HolderInfo> = ({ param, coin }) => {
   return (
     <div className="m-4">
       {holders && holders.map((trade, index) => (
-        <div className="flex justify-between text-xl text-white">
+        <div key={index} className="flex justify-between text-xl text-white">
           <div>
             {index + 1}. {trade.holder.name}
           </div>
