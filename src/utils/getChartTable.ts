@@ -1,7 +1,7 @@
 "use client";
 
 import { ChartTable } from "./types";
-import { BASE_URL } from "./util";
+import { BACKEND_URL } from "./util";
 
 export async function getChartTable({
     pairIndex,
@@ -19,7 +19,7 @@ export async function getChartTable({
     try {
         console.log("GET bars", token, from,)
         const res = await fetch(
-            `${BASE_URL}/chart/${pairIndex}/${from}/${to}/${range}/${token}`,
+            `${BACKEND_URL}/chart/${pairIndex}/${from}/${to}/${range}/${token}`,
         ).then((data) => data.json());
 
         if (!res) {
