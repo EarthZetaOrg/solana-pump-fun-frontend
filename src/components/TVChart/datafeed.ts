@@ -29,8 +29,8 @@ const configurationData: DatafeedConfiguration = {
 };
 
 export function getDataFeed({
-  name,
   pairIndex,
+  name,
   token
 }: {
   name: string;
@@ -142,15 +142,15 @@ export function getDataFeed({
         subscriberUID,
       );
 
-      subscribeOnStream(
-        symbolInfo,
-        resolution,
-        onRealtimeCallback,
-        subscriberUID,
-        onResetCacheNeededCallback,
-        lastBarsCache.get(symbolInfo.name)!,
-        pairIndex,
-      );
+      // subscribeOnStream(
+      //   symbolInfo,
+      //   resolution,
+      //   onRealtimeCallback,
+      //   subscriberUID,
+      //   onResetCacheNeededCallback,
+      //   lastBarsCache.get(symbolInfo.name)!,
+      //   pairIndex,
+      // );
     },
 
     unsubscribeBars: (subscriberUID) => {
@@ -158,7 +158,7 @@ export function getDataFeed({
         "[unsubscribeBars]: Method call with subscriberUID:",
         subscriberUID,
       );
-      unsubscribeFromStream(subscriberUID);
+      // unsubscribeFromStream(subscriberUID);
     },
   };
 }

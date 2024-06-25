@@ -4,6 +4,7 @@ import { coinInfo } from "@/utils/types";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { useContext, useState } from "react";
+import { getDataFeed } from "./TVChart/datafeed";
 interface TradingFormProps {
   coin: coinInfo
 }
@@ -13,6 +14,8 @@ export const TradeForm: React.FC<TradingFormProps> = ({ coin }) => {
   const [isBuy, setIsBuy] = useState<number>(2)
   const { user } = useContext(UserContext);
   const wallet = useWallet();
+  // const {isLoading, setIsLoading} = useContext(UserContext);
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -29,7 +32,10 @@ export const TradeForm: React.FC<TradingFormProps> = ({ coin }) => {
     console.log("trade wallet token", mint, userWallet)
     const res = await swapTx(mint, wallet, sol, isBuy)
     console.log("trade tx", res)
-  }
+    // if(res) {
+    //   setIsLoading(true);
+    // }
+  } 
   return (
     <div className="py-3 mx-2 rounded-lg h-[300px] bg-gray-700">
       <div className="flex justify-around pt-5 pb-3 px-3">

@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { ChartingLibraryWidgetOptions, HistoryCallback, IChartingLibraryWidget, IDatafeedChartApi, LanguageCode, ResolutionString, SearchSymbolResultItem, widget } from "@/libraries/charting_library";
 import { usePathname } from "next/navigation";
 import { Bar, recordInfo } from "@/utils/types";
@@ -9,6 +9,7 @@ import { getDataFeed } from "./datafeed";
 import ReactLoading from "react-loading";
 import { twMerge } from "tailwind-merge";
 import { flare } from "viem/chains";
+import UserContext from "@/context/UserContext";
 
 
 export type TVChartContainerProps = {
@@ -28,7 +29,7 @@ export const TVChartContainer = ({
     const chartContainerRef =
         useRef<HTMLDivElement>() as React.MutableRefObject<HTMLInputElement>;
     const tvWidgetRef = useRef<IChartingLibraryWidget | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const {isLoading, setIsLoading} = useContext(UserContext);
 
     useEffect(() => {
         if (!chartContainerRef.current) {
@@ -82,7 +83,7 @@ export const TVChartContainer = ({
 
     return (
         <div className="relative mb-[1px] h-[500px] w-full ">
-            {isLoading ? (
+            { isLoading ? (
                 <div className="z-9999 absolute left-0 top-0 flex h-full w-full items-center justify-center bg-tizz-background">
                     <ReactLoading
                         height={20}

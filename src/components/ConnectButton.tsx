@@ -65,7 +65,6 @@ export const ConnectButton: FC = () => {
         setLogin(true);
         setIsLoading(false);
       }
-
       successAlert("Message signed.");
     } catch (error) {
       errorAlert("Sign-in failed.");
