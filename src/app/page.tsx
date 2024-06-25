@@ -13,21 +13,23 @@ export default function Home() {
   const [totalStaked, setTotalStaked] = useState(0);
   const [token, setToken] = useState("");
   const [data, setData] = useState<coinInfo[]>([]);
-  const { isCreated } = useContext(UserContext)
+  const { isCreated } = useContext(UserContext);
   const { isLoading, setIsLoading } = useContext(UserContext);
 
   useEffect(() => {
     const fetchData = async () => {
       const coins = await getCoinsInfo();
-      console.log(coins);
-      setData(coins);
-      setIsLoading(true)
-    }
+      if (coins !== null) {
+        console.log("dashboard", coins);
+        setData(coins);
+        setIsLoading(true);
+      }
+    };
 
     fetchData();
     data.sort((a, b) => b.reserveOne - a.reserveOne);
-  }, [isCreated])
-  const searchToken = () => { };
+  }, [isCreated]);
+  const searchToken = () => {};
   return (
     <main className="min-h-screen flex-col  justify-between p-24 pt-2 ">
       <div className="text-center w-[240px]  m-auto">
@@ -40,12 +42,11 @@ export default function Home() {
       <div className="flex-col content-between">
         <h1 className="text-xl font-bold py-4 text-center">King of the hill</h1>
         <div className="flex justify-center">
-          {
-            data[0] &&
+          {data[0] && (
             <Link href={`/trading/${data[0]?._id}`}>
-                <CoinBlog coin={data[0]} componentKey="king" />
+              <CoinBlog coin={data[0]} componentKey="king" />
             </Link>
-          }
+          )}
         </div>
       </div>
       <div className="flex mt-10 justify-center pb-4">
@@ -63,15 +64,15 @@ export default function Home() {
           Search
         </button>
       </div>
-      {data &&
+      {data && (
         <div className="flex-wrap flex justify-center ">
-          {data.map((temp,index) => (
+          {data.map((temp, index) => (
             <Link href={`/trading/${temp._id}`} key={index}>
-                <CoinBlog coin={temp} componentKey="coin"></CoinBlog>
+              <CoinBlog coin={temp} componentKey="coin"></CoinBlog>
             </Link>
           ))}
         </div>
-      }
+      )}
     </main>
   );
 }

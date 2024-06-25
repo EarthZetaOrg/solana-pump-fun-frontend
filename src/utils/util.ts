@@ -49,7 +49,8 @@ export const createNewCoin = async (data: coinInfo) => {
 }
 
 export const getCoinsInfo = async (): Promise<coinInfo[]> => {
-    const res = await axios.get<coinInfo[]>('${BASE_URL}coin');
+    const res = await axios.get(`${BASE_URL}/coin`);
+    console.log("coin", `${BASE_URL}/coin`)
     return res.data
 }
 export const getCoinsInfoBy = async (id: string): Promise<coinInfo[]> => {
