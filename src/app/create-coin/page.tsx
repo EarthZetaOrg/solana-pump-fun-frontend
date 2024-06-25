@@ -14,11 +14,14 @@ import {
 } from "react";
 
 export default function CreateCoin() {
-  const { user, imageUrl, setImageUrl, isCreated, setIsCreated } = useContext(UserContext);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const { user, imageUrl, setImageUrl, isCreated, setIsCreated } =
+    useContext(UserContext);
+  // const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [newCoin, setNewCoin] = useState<coinInfo>({} as coinInfo);
   const [isCreate, setIsCreate] = useState(false);
   const [visible, setVisible] = useState<Boolean>(false);
+  const [selectedFileName, setSelectedFileName] = useState("");
+
   const JWT = process.env.NEXT_PUBLIC_PINATA_PRIVATE_KEY;
   useEffect(() => {
     if (
@@ -40,10 +43,14 @@ export default function CreateCoin() {
   const createCoin = async () => {
     if (imageUrl) {
       const url = await uploadImage(imageUrl);
-      console.log("create Coin =========",user)
-      if(url && user._id){
-        const coin: coinInfo = {...newCoin, creator:user._id.toString(), url:url}
-        console.log(coin)
+      console.log("create Coin =========", user);
+      if (url && user._id) {
+        const coin: coinInfo = {
+          ...newCoin,
+          creator: user._id.toString(),
+          url: url,
+        };
+        console.log(coin);
         const created = await createNewCoin(coin);
         setIsCreated(created);
       }
@@ -95,14 +102,15 @@ export default function CreateCoin() {
     const file = event.target.files && event.target.files[0];
     console.log("========", file);
     if (file) {
+      setSelectedFileName(file.name);
       const url = URL.createObjectURL(file);
       console.log("url++++++", url);
       setImageUrl(url);
 
       // Resetting the value of the file input
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
+      // if (fileInputRef.current) {
+      //   fileInputRef.current.value = "";
+      // }
     }
   };
   return (
@@ -167,8 +175,10 @@ export default function CreateCoin() {
           type="file"
           className="ml-2 mb-2"
           onChange={handleFileChange}
-          ref={fileInputRef}
+          multiple
+          // ref={fileInputRef}
         />
+        {selectedFileName && <p>Selected File: {selectedFileName}</p>}
       </div>
       <div className="font-xl m-auto mt-5 w-24 ">
         <h1

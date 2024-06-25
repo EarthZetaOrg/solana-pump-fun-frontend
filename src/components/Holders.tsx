@@ -52,7 +52,7 @@ export const Holders: React.FC<HolderInfo> = ({ param, coin }) => {
           <div>
             {index + 1}. {trade.holder.name}
           </div>
-          <div>{trade.totalAmount.toString()}</div>
+          <div>{Math.floor(trade.totalAmount/10_000_000_000)/1000}</div>
         </div>
       ))}
     </div>

@@ -30,6 +30,10 @@ export const TradeForm: React.FC<TradingFormProps> = ({ coin }) => {
     const mint = new PublicKey(coin.token)
     const userWallet = new PublicKey(user.wallet)
     console.log("trade wallet token", mint, userWallet)
+    if(isBuy == 1){
+      const tradeValue = parseFloat(sol)*coin.reserveTwo/coin.reserveOne
+      setSol(tradeValue.toString())  
+    }
     const res = await swapTx(mint, wallet, sol, isBuy)
     console.log("trade tx", res)
     // if(res) {
@@ -61,9 +65,15 @@ export const TradeForm: React.FC<TradingFormProps> = ({ coin }) => {
           placeholder="0.0"
           required
         />
+        {isBuy == 2?
         <div className=" absolute right-12 top-14 flex">
           SOL
         </div>
+        : 
+        <div className=" absolute right-12 top-14 flex">
+          {coin.name.toUpperCase()}
+        </div>  
+        }
         <div className="flex ">
           <div className="rounded m-2 p-1 bg-slate-800" onClick={() => setSol('')}>reset</div>
           <div className="rounded m-2 p-1 bg-slate-800" onClick={() => setSol("1")}>1 SOL</div>
