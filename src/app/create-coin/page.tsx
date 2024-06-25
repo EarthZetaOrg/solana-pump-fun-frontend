@@ -178,7 +178,7 @@ export default function CreateCoin() {
           multiple
           // ref={fileInputRef}
         />
-        {selectedFileName && <p>Selected File: {selectedFileName}</p>}
+        {/* {selectedFileName && <p>Selected File: {selectedFileName}</p>} */}
       </div>
       <div className="font-xl m-auto mt-5 w-24 ">
         <h1
