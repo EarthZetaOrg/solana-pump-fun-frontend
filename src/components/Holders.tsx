@@ -37,7 +37,7 @@ export const Holders: React.FC<HolderInfo> = ({ param, coin }) => {
           totalAmount: 0,
         };
       }
-      acc[holder.name].totalAmount += (-1)**record.holdingStatus*amount;
+      acc[holder.name].totalAmount += (-1)**(record.holdingStatus+1)*amount;
       return acc;
     }, {} as Record<string, holderInfo>);
 
@@ -52,7 +52,7 @@ export const Holders: React.FC<HolderInfo> = ({ param, coin }) => {
           <div>
             {index + 1}. {trade.holder.name}
           </div>
-          <div>{Math.floor(trade.totalAmount/10_000_000_000)/1000}</div>
+          <div>{Math.floor(trade.totalAmount/10_000_000_000)/1000}%</div>
         </div>
       ))}
     </div>

@@ -16,6 +16,31 @@ export const connection = new Connection("https://devnet.helius-rpc.com/?api-key
 // export const adminKeypair = web3.Keypair.fromSecretKey(privateKey);
 // const adminWallet = new NodeWallet(adminKeypair);
 
+export const getTokenBalance = async (
+  walletAddress: string,
+  tokenMintAddress: string
+) => {
+    const wallet = new PublicKey(walletAddress);
+    const tokenMint = new PublicKey(tokenMintAddress);
+
+    // Fetch the token account details
+    const response = await connection.getTokenAccountsByOwner(wallet, {
+        mint: tokenMint,
+    });
+
+    if (response.value.length == 0) {
+        console.log("No token account found for the specified mint address.");
+        return;
+    }
+
+    // Get the balance
+    const tokenAccountInfo = await connection.getTokenAccountBalance(response.value[0].pubkey);
+
+    // Convert the balance from integer to decimal format
+    console.log(`Token Balance: ${tokenAccountInfo.value.uiAmount}`);
+
+    return tokenAccountInfo.value.uiAmount;
+}
 
 
 // Swap transaction

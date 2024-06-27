@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios'
-import { ChartTable, coinInfo, userInfo } from './types';
+import { ChartTable, coinInfo, msgInfo, replyInfo, userInfo } from './types';
 
 export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -85,12 +85,13 @@ export const getUserInfo = async (data: string): Promise<any> => {
     }
 }
 
-export const getMessageByCoin = async (data: string): Promise<any> => {
+export const getMessageByCoin = async (data: string): Promise<msgInfo[]> => {
     try {
         const response = await axios.get(`${BACKEND_URL}/feedback/coin/${data}`, config)
+        console.log("messages:", response.data)
         return response.data
     } catch (err) {
-        return { error: "error setting up the request" }
+        return [];
     }
 }
 
@@ -105,4 +106,54 @@ export const getCoinTrade = async (data: string): Promise<any> => {
     }
 }
 
+export const postReply = async (data: replyInfo) => {
+    try{
+        const response = await axios.post(`${BACKEND_URL}/feedback/`, data, config)
+        return response.data
+    } catch (err) {
+        return { error: "error setting up the request" }
+    }
+}
 
+// ===========================Functions=====================================
+const JWT = process.env.NEXT_PUBLIC_PINATA_PRIVATE_KEY;
+
+export const pinFileToIPFS = async (blob: File) => {
+    try {
+        const data = new FormData();
+        data.append("file", blob);
+        const res = await fetch(
+            "https://api.pinata.cloud/pinning/pinFileToIPFS",
+            {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${JWT}`,
+                },
+                body: data,
+            }
+        );
+        const resData = await res.json();
+        return resData;
+    } catch (error) {
+        console.log(error);
+    }
+};
+export const uploadImage = async (url: string) => {
+    const res = await fetch(url);
+    console.log(res.blob);
+    const blob = await res.blob();
+
+    const imageFile = new File([blob], "image.png", { type: "image/png" });
+    console.log(imageFile);
+    const resData = await pinFileToIPFS(imageFile);
+    console.log(resData, "RESDATA>>>>");
+    if (resData) {
+        return `https://gateway.pinata.cloud/ipfs/${resData.IpfsHash}`;
+    } else {
+        return false;
+    }
+    // const file = await createGenericFileFromBrowserFile(imageFile);
+
+    // const [uri] = await umi.uploader.upload([file]);
+    // console.log(uri, 'uriHash');
+};

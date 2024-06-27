@@ -44,11 +44,10 @@ export interface coinInfo {
     date?: Date,
 }
 export interface msgInfo {
-    name: string,
-    avatar: string,
+    coinId: string | coinInfo,
+    sender: string | userInfo,
     date: Date,
     img?: string,
-    ticker?: string,
     msg: string,
 }
 
@@ -82,4 +81,10 @@ export interface Bar {
     open: number;
     close: number;
     volume: number;
+}
+export interface replyInfo {
+    coinId: string;
+    sender: string;
+    msg: string;
+    img?: string;
 }

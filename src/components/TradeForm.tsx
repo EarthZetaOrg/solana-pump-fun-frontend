@@ -1,21 +1,19 @@
 import UserContext from "@/context/UserContext";
-import { swapTx } from "@/program/web3";
+import { getTokenBalance, swapTx } from "@/program/web3";
 import { coinInfo } from "@/utils/types";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { useContext, useState } from "react";
-import { getDataFeed } from "./TVChart/datafeed";
 interface TradingFormProps {
   coin: coinInfo
 }
 
 export const TradeForm: React.FC<TradingFormProps> = ({ coin }) => {
   const [sol, setSol] = useState< string>('');
-  const [isBuy, setIsBuy] = useState<number>(2)
+  const [isBuy, setIsBuy] = useState<number>(2);
+  const [tokenBal, setTokenBal] = useState<number>(0);
   const { user } = useContext(UserContext);
   const wallet = useWallet();
-  // const {isLoading, setIsLoading} = useContext(UserContext);
-
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -25,21 +23,23 @@ export const TradeForm: React.FC<TradingFormProps> = ({ coin }) => {
       setSol(''); // Allow empty string to clear the input
     }
   };
+  const getBalance = async () => {
+    try {
+      const balance = await getTokenBalance(user.wallet, coin.token);
+      setTokenBal(balance);
+    } catch (error) {
+      setTokenBal(0);
+    }
+  }
+  getBalance();
 
   const handlTrade = async () => {
     const mint = new PublicKey(coin.token)
     const userWallet = new PublicKey(user.wallet)
     console.log("trade wallet token", mint, userWallet)
-    if(isBuy == 1){
-      const tradeValue = parseFloat(sol)*coin.reserveTwo/coin.reserveOne
-      setSol(tradeValue.toString())  
-    }
     const res = await swapTx(mint, wallet, sol, isBuy)
     console.log("trade tx", res)
-    // if(res) {
-    //   setIsLoading(true);
-    // }
-  } 
+  }
   return (
     <div className="py-3 mx-2 rounded-lg h-[300px] bg-gray-700">
       <div className="flex justify-around pt-5 pb-3 px-3">
@@ -65,21 +65,26 @@ export const TradeForm: React.FC<TradingFormProps> = ({ coin }) => {
           placeholder="0.0"
           required
         />
-        {isBuy == 2?
         <div className=" absolute right-12 top-14 flex">
-          SOL
+          {isBuy === 2 ? 'SOL' : coin.name}
         </div>
-        : 
-        <div className=" absolute right-12 top-14 flex">
-          {coin.name.toUpperCase()}
-        </div>  
-        }
-        <div className="flex ">
-          <div className="rounded m-2 p-1 bg-slate-800" onClick={() => setSol('')}>reset</div>
-          <div className="rounded m-2 p-1 bg-slate-800" onClick={() => setSol("1")}>1 SOL</div>
-          <div className="rounded m-2 p-1 bg-slate-800" onClick={() => setSol('5')}>5 SOL</div>
-          <div className="rounded m-2 p-1 bg-slate-800" onClick={() => setSol('10')}>10 SOL</div>
-        </div>
+        {
+          isBuy === 2 ? (
+            <div className="flex ">
+              <div className="rounded m-2 p-1 bg-slate-800" onClick={() => setSol('')}>reset</div>
+              <div className="rounded m-2 p-1 bg-slate-800" onClick={() => setSol("1")}>1 SOL</div>
+              <div className="rounded m-2 p-1 bg-slate-800" onClick={() => setSol('5')}>5 SOL</div>
+              <div className="rounded m-2 p-1 bg-slate-800" onClick={() => setSol('10')}>10 SOL</div>
+            </div>
+          ) : (
+            <div className="flex ">
+            <div className="rounded m-2 p-1 bg-slate-800" onClick={() => setSol('')}>reset</div>
+            <div className="rounded m-2 p-1 bg-slate-800" onClick={() => setSol((tokenBal/10).toString())}>10%</div>
+            <div className="rounded m-2 p-1 bg-slate-800" onClick={() => setSol((tokenBal/4).toString())}>25%</div>
+            <div className="rounded m-2 p-1 bg-slate-800" onClick={() => setSol((tokenBal/2).toString())}>50%</div>
+            <div className="rounded m-2 p-1 bg-slate-800" onClick={() => setSol((tokenBal).toString())}>100%</div>
+          </div>
+          )}
         <div className="bg-green-500 cursor-pointer hover:bg-green-400 w-full text-center rounded-lg h-[40px] leading-10" onClick={handlTrade}>
           Place Trade
         </div>

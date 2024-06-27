@@ -1,4 +1,4 @@
-import { msgInfo } from "@/utils/types";
+import { msgInfo, userInfo } from "@/utils/types";
 
 interface MessageFormProps {
   msg: msgInfo;
@@ -10,17 +10,16 @@ export const MessageForm: React.FC<MessageFormProps> = ({ msg }) => {
       <div className="m-2">
         <div className="flex my-2 ">
           <img
-            src="/bonkz10157.png"
+            src={(msg.sender as userInfo)?.avatar}
             alt="Token IMG"
             className="rounded"
             width={40}
             height={40}
           />
           <h3 className="bg-slate-600 mx-5 px-3 leading-10 rounded text-white text-lg ">
-            {msg.name}
+            {(msg.sender as userInfo).name}
           </h3>
-          {msg.date && <h3 className="text-white leading-10">{msg.date.toString()}</h3>}
-          {!msg.ticker && <p className="leading-10 mx-4 hover:cursor-pointer hover:text-white ">#834758929 [Reply]</p>}
+          {msg.time && <h3 className="text-white leading-10">{msg.time.toString()}</h3>}
         </div>
         <div className="flex">
           {msg.img !== undefined && (
@@ -33,8 +32,7 @@ export const MessageForm: React.FC<MessageFormProps> = ({ msg }) => {
             />
           )}
           <div className=" text-white">
-            {msg.ticker && <p className="text-2xl">{msg.ticker}</p>}
-            <p className="text-xl tex">{msg.msg}</p>
+            <p className="text-xl pl-4">{msg.msg}</p>
           </div>
         </div>
       </div>

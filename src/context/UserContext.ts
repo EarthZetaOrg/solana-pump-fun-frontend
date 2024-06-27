@@ -1,5 +1,5 @@
 "use client"
-import { userInfo } from '@/utils/types';
+import { msgInfo, userInfo } from '@/utils/types';
 import { createContext, useContext, useState, ReactNode } from 'react';
 
 // interface WalletContextType {
@@ -20,9 +20,11 @@ const UserContext = createContext({
     isLoading: false,
     setIsLoading: (value: boolean) => { },
     imageUrl: '/upload-bg.png',
-    setImageUrl: (value: string) => {},
+    setImageUrl: (value: string) => { },
     isCreated: false,
     setIsCreated: (value: boolean) => { },
+    messages: [] as msgInfo[],
+    setMessages: (value: msgInfo[]) => [] as msgInfo[],
 })
 
 export default UserContext;

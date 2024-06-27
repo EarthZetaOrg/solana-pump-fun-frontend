@@ -1,28 +1,26 @@
 "use client";
 
 import UserContext from "@/context/UserContext";
+import { useSocket } from "@/contexts/SocketContext";
 import { coinInfo } from "@/utils/types";
-import { createNewCoin } from "@/utils/util";
+import { createNewCoin, uploadImage } from "@/utils/util";
 import Link from "next/link";
 import {
   ChangeEvent,
   useContext,
   useEffect,
-  useMemo,
-  useRef,
   useState,
 } from "react";
 
 export default function CreateCoin() {
   const { user, imageUrl, setImageUrl, isCreated, setIsCreated } =
     useContext(UserContext);
-  // const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const { isLoading, setIsLoading, alertState } = useSocket();
   const [newCoin, setNewCoin] = useState<coinInfo>({} as coinInfo);
   const [isCreate, setIsCreate] = useState(false);
   const [visible, setVisible] = useState<Boolean>(false);
   const [selectedFileName, setSelectedFileName] = useState("");
 
-  const JWT = process.env.NEXT_PUBLIC_PINATA_PRIVATE_KEY;
   useEffect(() => {
     if (
       newCoin.name !== undefined &&
@@ -42,6 +40,7 @@ export default function CreateCoin() {
 
   const createCoin = async () => {
     if (imageUrl) {
+      setIsLoading(true);
       const url = await uploadImage(imageUrl);
       console.log("create Coin =========", user);
       if (url && user._id) {
@@ -59,45 +58,7 @@ export default function CreateCoin() {
     }
   };
 
-  const pinFileToIPFS = async (blob: File) => {
-    try {
-      const data = new FormData();
-      data.append("file", blob);
-      const res = await fetch(
-        "https://api.pinata.cloud/pinning/pinFileToIPFS",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${JWT}`,
-          },
-          body: data,
-        }
-      );
-      const resData = await res.json();
-      return resData;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const uploadImage = async (url: string) => {
-    const res = await fetch(url);
-    console.log(res.blob);
-    const blob = await res.blob();
 
-    const imageFile = new File([blob], "image.png", { type: "image/png" });
-    console.log(imageFile);
-    const resData = await pinFileToIPFS(imageFile);
-    console.log(resData, "RESDATA>>>>");
-    if (resData) {
-      return `https://gateway.pinata.cloud/ipfs/${resData.IpfsHash}`;
-    } else {
-      return false;
-    }
-    // const file = await createGenericFileFromBrowserFile(imageFile);
-
-    // const [uri] = await umi.uploader.upload([file]);
-    // console.log(uri, 'uriHash');
-  };
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
     console.log("========", file);
@@ -106,11 +67,6 @@ export default function CreateCoin() {
       const url = URL.createObjectURL(file);
       console.log("url++++++", url);
       setImageUrl(url);
-
-      // Resetting the value of the file input
-      // if (fileInputRef.current) {
-      //   fileInputRef.current.value = "";
-      // }
     }
   };
   return (
@@ -176,9 +132,7 @@ export default function CreateCoin() {
           className="ml-2 mb-2"
           onChange={handleFileChange}
           multiple
-          // ref={fileInputRef}
         />
-        {/* {selectedFileName && <p>Selected File: {selectedFileName}</p>} */}
       </div>
       <div className="font-xl m-auto mt-5 w-24 ">
         <h1
@@ -207,52 +161,16 @@ export default function CreateCoin() {
               required
             />
           </div>
-          {/* <div className="pt-[20px] m-auto">
-            <label
-              htmlFor="ticker py-[20px]"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              ticker*
-            </label>
-            <input
-              type="text"
-              id="ticker"
-              value={newCoin.ticker}
-              onChange={handleChange}
-              className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="ticker"
-              required
-            />
-          </div>
-          <div className="pt-[20px] m-auto">
-            <label
-              htmlFor="ticker py-[20px]"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              ticker*
-            </label>
-            <input
-              type="text"
-              id="ticker"
-              value={newCoin.ticker}
-              onChange={handleChange}
-              className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="ticker"
-              required
-            />
-          </div> */}
         </>
       )}
       <div>
-        <Link href={`/`}>
-          <button
-            className=" mt-[20px] active:bg-slate-900 m-auto rounded-lg bg-white hover: text-center py-2 w-full"
-            onClick={createCoin}
-            disabled={isCreate}
-          >
-            create coin
-          </button>
-        </Link>
+        <button
+          className=" mt-[20px] active:bg-slate-900 m-auto rounded-lg bg-white hover: text-center py-2 w-full"
+          onClick={createCoin}
+          disabled={isCreate}
+        >
+          create coin
+        </button>
       </div>
     </div>
   );
