@@ -25,7 +25,6 @@ export default function Home() {
     const fetchData = async () => {
       const coins = await getCoinsInfo();
       if (coins !== null) {
-        console.log("dashboard", coins);
         coins.sort((a, b) => a.reserveOne - b.reserveOne);
 
         setData(coins);
@@ -35,10 +34,8 @@ export default function Home() {
     };
     fetchData();
 
-    console.log("okkkkkkk")
   }, []);
   const handleSortSelection = (option) => {
-    console.log(option);
     let sortOption: string = '';
     let orderOption: string = "";
     let sortedData = [...data]; // Create a new array to prevent direct state mutation
@@ -55,23 +52,18 @@ export default function Home() {
     if (orderOption == "desc") {
       switch (sortOption) {
         case "bump order":
-          console.log("bump order");
           sortedData.sort((a, b) => a.reserveOne - b.reserveOne);
           break;
         case "last reply":
-          console.log("reply");
           sortedData.sort((a, b) => a.reserveOne - b.reserveOne);
           break;
         case "reply count":
-          console.log("reply count");
           sortedData.sort((a, b) => a.reserveOne - b.reserveOne);
           break;
         case "market cap":
-          console.log("market cap");
           sortedData.sort((a, b) => a.marketcap - b.marketcap);
           break;
         case "creation time":
-          console.log("creation time");
           sortedData.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
           break;
         default:
@@ -81,23 +73,18 @@ export default function Home() {
     } else {
       switch (sortOption) {
         case "bump order":
-          console.log("bump order");
           sortedData.sort((a, b) => b.reserveOne - a.reserveOne);
           break;
         case "last reply":
-          console.log("reply");
           sortedData.sort((a, b) => b.reserveOne - a.reserveOne);
           break;
         case "reply count":
-          console.log("reply count");
           sortedData.sort((a, b) => b.reserveOne - a.reserveOne);
           break;
         case "market cap":
-          console.log("market cap");
           sortedData.sort((a, b) => b.marketcap - a.marketcap);
           break;
         case "creation time":
-          console.log("creation time");
           sortedData.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
           break;
         default:

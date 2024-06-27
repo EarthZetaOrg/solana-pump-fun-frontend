@@ -30,7 +30,6 @@ export default function Page() {
     }
     fetchData()
   }, [pathname]);
-  console.log("trade coin", coin)
   return (
     <>
       <div className="text-center">

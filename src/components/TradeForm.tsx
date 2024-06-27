@@ -36,9 +36,7 @@ export const TradeForm: React.FC<TradingFormProps> = ({ coin }) => {
   const handlTrade = async () => {
     const mint = new PublicKey(coin.token)
     const userWallet = new PublicKey(user.wallet)
-    console.log("trade wallet token", mint, userWallet)
     const res = await swapTx(mint, wallet, sol, isBuy)
-    console.log("trade tx", res)
   }
   return (
     <div className="py-3 mx-2 rounded-lg h-[300px] bg-gray-700">

@@ -42,14 +42,12 @@ export default function CreateCoin() {
     if (imageUrl) {
       setIsLoading(true);
       const url = await uploadImage(imageUrl);
-      console.log("create Coin =========", user);
       if (url && user._id) {
         const coin: coinInfo = {
           ...newCoin,
           creator: user._id.toString(),
           url: url,
         };
-        console.log(coin);
         const created = await createNewCoin(coin);
         setIsCreated(created);
       }
@@ -61,11 +59,9 @@ export default function CreateCoin() {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
-    console.log("========", file);
     if (file) {
       setSelectedFileName(file.name);
       const url = URL.createObjectURL(file);
-      console.log("url++++++", url);
       setImageUrl(url);
     }
   };

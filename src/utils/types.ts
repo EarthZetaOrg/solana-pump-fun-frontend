@@ -46,7 +46,7 @@ export interface coinInfo {
 export interface msgInfo {
     coinId: string | coinInfo,
     sender: string | userInfo,
-    date: Date,
+    time: Date,
     img?: string,
     msg: string,
 }

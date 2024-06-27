@@ -21,8 +21,6 @@ export const ConnectButton: FC = () => {
   useEffect(() => {
     const handleClick = async () => {
       if (publicKey && !login) {
-        console.log("UseEffect");
-        console.log(publicKey.toBase58());
         const updatedUser: userInfo = {
           name: publicKey.toBase58().slice(0, 6),
           wallet: publicKey.toBase58(),
@@ -36,7 +34,6 @@ export const ConnectButton: FC = () => {
   const sign = async (updatedUser: userInfo) => {
     try {
       const connection = await walletConnect({ data: updatedUser });
-      console.log(connection)
       if(!connection) return;
       if (connection.nonce===undefined) {
         const newUser = {
@@ -45,7 +42,6 @@ export const ConnectButton: FC = () => {
           _id: connection._id,
           avatar: connection.avatar,
         };
-        console.log(connection, newUser)
         setUser(newUser as userInfo);
         setLogin(true);
         return;

@@ -22,31 +22,25 @@ export const Chatting: React.FC<ChattingProps> = ({ param, coin }) => {
   useEffect(() => {
     const fetchData = async () => {
       if (param) {
-        console.log("param::: chatting", param, isTrades)
         if (isTrades) {
           const data = await getMessageByCoin(param);
-          console.log("trade: chatting====", data)
           setMessages(data);
         } else {
           const data = await getCoinTrade(param);
-          console.log("trade: trade status", data);
           setTrades(data)
         }
       }
     }
     fetchData();
   }, [isTrades, param])
-  console.log("messages::", messages)
   const handleModalToggle = () => {
     setIsModal(!isModal);
   };
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
-    console.log("========", file);
     if (file) {
       setSelectedFileName(file.name);
       const url = URL.createObjectURL(file);
-      console.log("url++++++", url);
       setImageUrl(url);
     }
   };
@@ -55,7 +49,6 @@ export const Chatting: React.FC<ChattingProps> = ({ param, coin }) => {
     let reply: replyInfo;
     if (imageUrl) {
       const url = await uploadImage(imageUrl);
-      console.log("create Coin =========", user);
       if (url && user._id) {
         reply = {
           coinId: coin._id,
@@ -73,7 +66,6 @@ export const Chatting: React.FC<ChattingProps> = ({ param, coin }) => {
         }
       }
     }
-    console.log("reply", reply)
     await postReply(reply);
     handleModalToggle;
   }

@@ -53,10 +53,8 @@ export default function Page() {
   };
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
-    console.log("========", file);
     if (file) {
       const url = URL.createObjectURL(file);
-      console.log("url++++++", url);
       setImageUrl(url);
 
       // Resetting the value of the file input
