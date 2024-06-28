@@ -25,6 +25,7 @@
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
+    "react-loader-spinner": "^6.1.6",
     "react-loading": "^2.0.3",
     "react-query": "^3.39.3",
     "react-spinners": "^0.13.8",

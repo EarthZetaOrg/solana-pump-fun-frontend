@@ -1,5 +1,7 @@
 "use client";
 
+import { Spinner } from "@/components/Spinner";
+import { infoAlert } from "@/components/ToastGroup";
 import UserContext from "@/context/UserContext";
 import { useSocket } from "@/contexts/SocketContext";
 import { coinInfo } from "@/utils/types";
@@ -42,6 +44,7 @@ export default function CreateCoin() {
     if (imageUrl) {
       setIsLoading(true);
       const url = await uploadImage(imageUrl);
+      infoAlert(`Uploaded Image for ${newCoin.name}`)
       if (url && user._id) {
         const coin: coinInfo = {
           ...newCoin,
@@ -50,6 +53,7 @@ export default function CreateCoin() {
         };
         const created = await createNewCoin(coin);
         setIsCreated(created);
+        setNewCoin({} as coinInfo);
       }
     } else {
       console.error("Image URL is not defined");
@@ -72,6 +76,7 @@ export default function CreateCoin() {
           [go back]
         </h1>
       </Link>
+      {isLoading && Spinner()}
       <div className=" pt-[20px] m-auto">
         <label
           htmlFor="name  py-[20px]"
@@ -161,7 +166,7 @@ export default function CreateCoin() {
       )}
       <div>
         <button
-          className=" mt-[20px] active:bg-slate-900 m-auto rounded-lg bg-white hover: text-center py-2 w-full"
+          className=" mt-[20px] active:bg-slate-900 m-auto rounded-lg bg-blue-700 hover: text-center py-2 w-full"
           onClick={createCoin}
           disabled={isCreate}
         >

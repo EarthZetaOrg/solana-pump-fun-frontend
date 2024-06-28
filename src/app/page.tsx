@@ -125,9 +125,9 @@ export default function Home() {
       <div className="flex-col content-between">
         <h1 className="text-xl font-bold py-4 text-center">King of the hill</h1>
         <div className="flex justify-center">
-          {king !== null && (
-            <Link href={`/trading/${king?._id}`}>
-              <CoinBlog coin={king} componentKey="king" />
+          {data[0] && (
+            <Link href={`/trading/${data[0]?._id}`}>
+              <CoinBlog coin={data[0]} componentKey="king" />
             </Link>
           )}
         </div>

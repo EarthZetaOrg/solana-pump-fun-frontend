@@ -78,16 +78,16 @@ export const ConnectButton: FC = () => {
   };
   return (
     <div>
-      <button className=" rounded-lg border-[0.75px] border-[#371111] bg-[#5b1717] shadow-btn-inner text-[#ffffff] tracking-[0.32px] h-[40px] pt-1 px-2 group relative ">
+      <button className=" rounded-lg border-[0.75px] border-[#371111] bg-[#5b1717] shadow-btn-inner text-[#ffffff] tracking-[0.32px] h-[42px] px-2 group relative ">
         {login  && publicKey ? (
           <>
             <div className="flex mr-3 items-center justify-center text-[16px] lg:text-md">
-             {(user.avatar !==undefined) && <img
+             {(user.avatar !== undefined) && <img
                 src={user.avatar}
                 alt="Token IMG"
-                className="rounded p"
-                width={40}
-                height={40}
+                className="rounded p-1"
+                width={35}
+                height={35}
               />}
               <div className="ml-3">
                 {publicKey.toBase58().slice(0, 4)}....

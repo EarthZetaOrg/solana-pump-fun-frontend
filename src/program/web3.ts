@@ -42,7 +42,6 @@ export const getTokenBalance = async (
     return tokenAccountInfo.value.uiAmount;
 }
 
-
 // Swap transaction
 export const swapTx = async (
     mint1: PublicKey, wallet: WalletContextState, amount: string , type: number
@@ -80,7 +79,7 @@ export const swapTx = async (
 
         console.log(amount, "====", typeof(amount))
         const args: SwapArgs = {
-            amount: new anchor.BN(parseFloat(amount)*1000_000_000),
+            amount: new anchor.BN(type===2 ? parseFloat(amount)*1000_000_000 : parseFloat(amount)*1_000_000),
             style: new anchor.BN(type)
         }
 

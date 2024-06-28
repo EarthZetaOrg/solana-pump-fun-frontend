@@ -66,8 +66,8 @@ export const Chatting: React.FC<ChattingProps> = ({ param, coin }) => {
         }
       }
     }
+    handleModalToggle();
     await postReply(reply);
-    handleModalToggle;
   }
   return (
     <div className="pt-8">

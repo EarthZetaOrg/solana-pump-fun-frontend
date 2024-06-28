@@ -26,7 +26,7 @@ export const TradeForm: React.FC<TradingFormProps> = ({ coin }) => {
   const getBalance = async () => {
     try {
       const balance = await getTokenBalance(user.wallet, coin.token);
-      setTokenBal(balance);
+      setTokenBal(balance ? balance : 0);
     } catch (error) {
       setTokenBal(0);
     }

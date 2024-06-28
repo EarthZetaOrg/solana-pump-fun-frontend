@@ -109,7 +109,7 @@ const SocketProvider = (props: { children: any }) => {
     // init socket client object
     useEffect(() => {
 
-        const socket = io(process.env.NEXT_PUBLIC_BASE_URL!, {
+        const socket = io(process.env.NEXT_PUBLIC_BACKEND_URL!, {
             transports: ["websocket"],
         });
         socket.on("connect", async () => {
