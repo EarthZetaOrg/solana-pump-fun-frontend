@@ -1,11 +1,5 @@
-## Basic frontend for pump.fun
+## Solana Pumpfun Frontend source code(pump.fun fork), implementing main structure for pump fun.
 
-Many parts are under private status.
-
-You can check smart contract and backend repo as well.
-
-You can contact me if you want a better product.
-
-Telegram: https://t.me/microgift28
-
-Discord: https://discord.com/users/1074514238325927956
+It was for to give basic understanding about pumpfun frontend workflow, main structure.
+Whole working code is private, feel free to reach out of me if you wanna get it[Whatsapp: https://wa.me/13137423660, Telegram: https://t.me/DevCutup]
+Also you can access smart contract and backend codebase also, can get it from me.
