@@ -9,7 +9,7 @@ import { WalletContextState, useConnection, useWallet } from '@solana/wallet-ada
 const curveSeed = "CurveConfiguration"
 const POOL_SEED_PREFIX = "liquidity_pool"
 
-export const connection = new Connection("https://devnet.helius-rpc.com/?api-key=44b7171f-7de7-4e68-9d08-eff1ef7529bd")
+export const connection = new Connection("api-key")
 
 // const privateKey = base58.decode(process.env.PRIVATE_KEY!);
 
