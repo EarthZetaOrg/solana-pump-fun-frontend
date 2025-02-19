@@ -1,13 +1,31 @@
 {
-  "name": "pump-frontend",
+  "name": "pumpfun-frontend",
   "version": "0.1.0",
-  "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
+  "private": true,
+  "description": "Pumpfun Frontend",
+  "author": "earthzeta",
+  "license": "MIT",
+  "homepage": "https://pumpfun.earthzeta.xyz",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/earthzeta/pumpfun-frontend"
+  },
+  "bugs": {
+    "url": "https://github.com/earthzeta/pumpfun-frontend/issues"
+  },
+  "keywords": [
+    "pumpfun",
+    "frontend",
+    "solana",
+    "crypto",
+    "web3"
+  ],
   "dependencies": {
     "@coral-xyz/anchor": "^0.30.0",
     "@gainsnetwork/sdk": "^0.2.1",
